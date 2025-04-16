@@ -1,10 +1,11 @@
 package model;
 
-public class CoinAcceptor {
+public class CoinAcceptor extends PayModel {
     private int amount;
 
-    public CoinAcceptor(int amount) {
-        this.amount = amount;
+
+    public CoinAcceptor(int sum) {
+        super(sum);
     }
 
     public int getAmount() {
