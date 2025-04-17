@@ -48,6 +48,10 @@ public class AppRunner {
 
     }
 
+    private void chosePay(){
+
+    }
+
     private UniversalArray<Product> getAllowedProducts() {
         UniversalArray<Product> allowProducts = new UniversalArrayImpl<>();
         for (int i = 0; i < products.size(); i++) {
