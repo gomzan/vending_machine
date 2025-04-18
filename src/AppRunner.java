@@ -13,6 +13,8 @@ public class AppRunner {
 
     private final CardAcceptor cardAcceptor;
 
+
+
     private static boolean isExit = false;
 
     private AppRunner() {
@@ -32,24 +34,54 @@ public class AppRunner {
     public static void run() {
         AppRunner app = new AppRunner();
         while (!isExit) {
-            app.startSimulation();
+            app.chosePay();
         }
     }
 
     private void startSimulation() {
-        print("В автомате доступны:");
-        showProducts(products);
+        chosePay();
+//        print("В автомате доступны:");
+//        showProducts(products);
 
+//        print("Монет на сумму: " + coinAcceptor.getSum());
+//
+//        UniversalArray<Product> allowProducts = new UniversalArrayImpl<>();
+//        allowProducts.addAll(getAllowedProducts().toArray());
+//        chooseAction(allowProducts);
+    }
+
+    private void coinPay(){
         print("Монет на сумму: " + coinAcceptor.getSum());
-
         UniversalArray<Product> allowProducts = new UniversalArrayImpl<>();
         allowProducts.addAll(getAllowedProducts().toArray());
         chooseAction(allowProducts);
+    }
 
+    private void cartPay(){
+        print("Сумма на карте: " + cardAcceptor.getSum());
+        UniversalArray<Product> allowProducts = new UniversalArrayImpl<>();
+        allowProducts.addAll(getAllowedProducts().toArray());
+        chooseAction(allowProducts);
     }
 
     private void chosePay(){
-
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Выберите способ оплаты");
+        System.out.println("1 - монеты");
+        System.out.println("2 - карта");
+        String chose = sc.nextLine();
+        switch (chose){
+            case "1":
+                print("В автомате доступны:");
+                showProducts(products);
+                coinPay();
+                break;
+            case  "2":
+                print("В автомате доступны:");
+                showProducts(products);
+                cartPay();
+                break;
+        }
     }
 
     private UniversalArray<Product> getAllowedProducts() {
