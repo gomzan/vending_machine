@@ -50,6 +50,7 @@ public class AppRunner {
         System.out.println("2 - наличными");
         System.out.println("3 - карта");
         System.out.println("4 - оставшаяся сумма");
+        System.out.println("0 - выход");
         String chose = sc.nextLine();
         switch (chose){
             case "1":
@@ -74,10 +75,13 @@ public class AppRunner {
                 print("У вас осталось монет в кармане " + coinAcceptor.getSum());
                 print("У вас осталось денег на карте " + cardAcceptor.getSum());
                 break;
+            case  "0":
+                print("Терминал завершил свою работу");
+                isExit = true;
+                return;
             default:
                 System.out.println("Нет такой команды");
         }
-        System.out.println("Хотите выйти нажмите h");
     }
 
     private void coinPay(){
