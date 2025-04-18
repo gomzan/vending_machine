@@ -3,6 +3,7 @@ import model.*;
 import util.UniversalArray;
 import util.UniversalArrayImpl;
 
+import java.util.Random;
 import java.util.Scanner;
 
 public class AppRunner {
@@ -39,21 +40,6 @@ public class AppRunner {
         }
     }
 
-
-    private void coinPay(){
-        print("Монет на сумму: " + coinAcceptor.getSum());
-        UniversalArray<Product> allowProducts = new UniversalArrayImpl<>();
-        allowProducts.addAll(getAllowedProducts().toArray());
-        chooseAction(allowProducts);
-    }
-
-    private void cartPay(){
-        print("Сумма на карте: " + cardAcceptor.getSum());
-        UniversalArray<Product> allowProducts = new UniversalArrayImpl<>();
-        allowProducts.addAll(getAllowedProducts().toArray());
-        chooseAction(allowProducts);
-    }
-
     private void chosePay(){
         Scanner sc = new Scanner(System.in);
         System.out.println("Выберите способ оплаты");
@@ -75,6 +61,67 @@ public class AppRunner {
                 break;
         }
     }
+
+    private void coinPay(){
+        print("Монет на сумму: " + coinAcceptor.getSum());
+        UniversalArray<Product> allowProducts = new UniversalArrayImpl<>();
+        allowProducts.addAll(getAllowedProducts().toArray());
+        chooseAction(allowProducts);
+    }
+
+    private void cartPay(){
+        System.out.println("Вы оплачиваете картой");
+        while (true) {
+            boolean number = cartNumber();
+            boolean password = cartPassword();
+            if (!password && !number) {
+                System.out.println("Неверные данные");
+                return;
+            }
+            else {
+                print("Сумма на карте: " + cardAcceptor.getSum());
+                UniversalArray<Product> allowProducts = new UniversalArrayImpl<>();
+                allowProducts.addAll(getAllowedProducts().toArray());
+                chooseAction(allowProducts);
+                break;
+            }
+        }
+
+    }
+
+    private static boolean cartNumber(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Введите шестизначный номер карты");
+        System.out.println("Цифры должны быть в пределах от 100000 до 999999");
+        while (true){
+            int numberCart = sc.nextInt();
+            if(numberCart <= 100000 || numberCart > 999999){
+                System.out.println("Неверные данные");
+                return false;
+            } else {
+                System.out.println("Номер карты приемлем");
+                return true;
+            }
+        }
+    }
+
+    private static boolean cartPassword() {
+        Random rnd = new Random();
+        Scanner sc = new Scanner(System.in);
+        int randomPassword = rnd.nextInt(1000);
+        System.out.printf("Одноразовый пароль %s%n", randomPassword);
+        int password = sc.nextInt();
+        System.out.println();
+        if (password == randomPassword) {
+            return true;
+        } else {
+            return  false;
+        }
+    }
+
+
+
+
 
     private UniversalArray<Product> getAllowedProducts() {
         UniversalArray<Product> allowProducts = new UniversalArrayImpl<>();
