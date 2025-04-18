@@ -1,0 +1,10 @@
+1 - Creating a branch of the finished project for homework and adding.
+ a new branch and checking the branch`s operation.
+ 2 - Rename txt file.
+ 3 - Added new method chosePay.
+ 4 - New class name Terminal.
+ 5 - Added the ability to choose payment by coin or card.
+     And in the getAllowedProducts and chooseAction methods coinAcceptor has been replaced with a terminal
+ 6 - Added method for requesting and entering card number and for requesting one-time password
+ 7 - Added method CashAcceptor and added the ability to pay in cash.
+Added new method chosePay,
