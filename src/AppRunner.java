@@ -14,8 +14,9 @@ public class AppRunner {
 
     private final CardAcceptor cardAcceptor;
 
-    private  Terminal terminal;
+    private final CashAcceptor cashAcceptor;
 
+    private  Terminal terminal;
 
     private static boolean isExit = false;
 
@@ -30,7 +31,9 @@ public class AppRunner {
         });
 
         coinAcceptor = new CoinAcceptor(100);
+        cashAcceptor = new CashAcceptor(1400);
         cardAcceptor = new CardAcceptor(1500);
+
     }
 
     public static void run() {
@@ -44,7 +47,9 @@ public class AppRunner {
         Scanner sc = new Scanner(System.in);
         System.out.println("Выберите способ оплаты");
         System.out.println("1 - монеты");
-        System.out.println("2 - карта");
+        System.out.println("2 - наличными");
+        System.out.println("3 - карта");
+        System.out.println("4 - оставшаяся сумма");
         String chose = sc.nextLine();
         switch (chose){
             case "1":
@@ -54,16 +59,36 @@ public class AppRunner {
                 coinPay();
                 break;
             case  "2":
+                terminal = cashAcceptor;
+                print("В автомате доступны:");
+                showProducts(products);
+                cashPay();
+                break;
+            case  "3":
                 terminal = cardAcceptor;
                 print("В автомате доступны:");
                 showProducts(products);
                 cartPay();
                 break;
+            case  "4":
+                print("У вас осталось монет в кармане " + coinAcceptor.getSum());
+                print("У вас осталось денег на карте " + cardAcceptor.getSum());
+                break;
+            default:
+                System.out.println("Нет такой команды");
         }
+        System.out.println("Хотите выйти нажмите h");
     }
 
     private void coinPay(){
         print("Монет на сумму: " + coinAcceptor.getSum());
+        UniversalArray<Product> allowProducts = new UniversalArrayImpl<>();
+        allowProducts.addAll(getAllowedProducts().toArray());
+        chooseAction(allowProducts);
+    }
+
+    private void cashPay(){
+        print("Бумажных денег на сумму: " + cashAcceptor.getSum());
         UniversalArray<Product> allowProducts = new UniversalArrayImpl<>();
         allowProducts.addAll(getAllowedProducts().toArray());
         chooseAction(allowProducts);
@@ -74,9 +99,9 @@ public class AppRunner {
         while (true) {
             boolean number = cartNumber();
             boolean password = cartPassword();
-            if (!password && !number) {
+            if (!password || !number) {
                 System.out.println("Неверные данные");
-                return;
+                break;
             }
             else {
                 print("Сумма на карте: " + cardAcceptor.getSum());
@@ -86,7 +111,6 @@ public class AppRunner {
                 break;
             }
         }
-
     }
 
     private static boolean cartNumber(){
@@ -119,10 +143,6 @@ public class AppRunner {
         }
     }
 
-
-
-
-
     private UniversalArray<Product> getAllowedProducts() {
         UniversalArray<Product> allowProducts = new UniversalArrayImpl<>();
         for (int i = 0; i < products.size(); i++) {
@@ -142,6 +162,8 @@ public class AppRunner {
                 if (products.get(i).getActionLetter().equals(ActionLetter.valueOf(action.toUpperCase()))) {
                     terminal.setSum(terminal.getSum() - products.get(i).getPrice());
                     print("Вы купили " + products.get(i).getName());
+                    print("И вы потратили " + products.get(i).getPrice());
+                    print("У вас осталось " + terminal.getSum());
                     break;
                 } else if ("h".equalsIgnoreCase(action)) {
                     isExit = true;
@@ -152,8 +174,6 @@ public class AppRunner {
             print("Недопустимая буква. Попрбуйте еще раз.");
             chooseAction(products);
         }
-
-
     }
 
     private void showActions(UniversalArray<Product> products) {
