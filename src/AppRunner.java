@@ -13,6 +13,7 @@ public class AppRunner {
 
     private final CardAcceptor cardAcceptor;
 
+    private  Terminal terminal;
 
 
     private static boolean isExit = false;
@@ -38,17 +39,6 @@ public class AppRunner {
         }
     }
 
-    private void startSimulation() {
-        chosePay();
-//        print("В автомате доступны:");
-//        showProducts(products);
-
-//        print("Монет на сумму: " + coinAcceptor.getSum());
-//
-//        UniversalArray<Product> allowProducts = new UniversalArrayImpl<>();
-//        allowProducts.addAll(getAllowedProducts().toArray());
-//        chooseAction(allowProducts);
-    }
 
     private void coinPay(){
         print("Монет на сумму: " + coinAcceptor.getSum());
@@ -72,11 +62,13 @@ public class AppRunner {
         String chose = sc.nextLine();
         switch (chose){
             case "1":
+                terminal = coinAcceptor;
                 print("В автомате доступны:");
                 showProducts(products);
                 coinPay();
                 break;
             case  "2":
+                terminal = cardAcceptor;
                 print("В автомате доступны:");
                 showProducts(products);
                 cartPay();
@@ -87,7 +79,7 @@ public class AppRunner {
     private UniversalArray<Product> getAllowedProducts() {
         UniversalArray<Product> allowProducts = new UniversalArrayImpl<>();
         for (int i = 0; i < products.size(); i++) {
-            if (coinAcceptor.getSum() >= products.get(i).getPrice()) {
+            if (terminal.getSum() >= products.get(i).getPrice()) {
                 allowProducts.add(products.get(i));
             }
         }
@@ -101,7 +93,7 @@ public class AppRunner {
         try {
             for (int i = 0; i < products.size(); i++) {
                 if (products.get(i).getActionLetter().equals(ActionLetter.valueOf(action.toUpperCase()))) {
-                    coinAcceptor.setSum(coinAcceptor.getSum() - products.get(i).getPrice());
+                    terminal.setSum(terminal.getSum() - products.get(i).getPrice());
                     print("Вы купили " + products.get(i).getName());
                     break;
                 } else if ("h".equalsIgnoreCase(action)) {
