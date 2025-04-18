@@ -1,6 +1,6 @@
 package model;
 
-public class CoinAcceptor extends PayModel {
+public class CoinAcceptor extends Terminal {
 
 
     public CoinAcceptor(int sum) {

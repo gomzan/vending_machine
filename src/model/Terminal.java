@@ -1,9 +1,9 @@
 package model;
 
-public class PayModel {
+public class Terminal {
     private int sum;
 
-    public PayModel(int sum) {
+    public Terminal(int sum) {
         this.sum = sum;
     }
 
